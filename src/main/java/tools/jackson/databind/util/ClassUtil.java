@@ -978,7 +978,9 @@ public final class ClassUtil
     public static boolean isJDKClass(Class<?> rawType) {
         final String clsName = rawType.getName();
         for (String prefix : JDK_PREFIXES) {
-            if (clsName.startsWith(prefix)) {
+            if (clsName.startsWith(prefix) &&
+                    // As per [databind#5416], should NOT consider JDK proxy class as a JDK class:
+                    !Proxy.isProxyClass(rawType)) {
                 return true;
             }
         }
